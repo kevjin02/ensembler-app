@@ -1,11 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
-import Typography from '@material-ui/core/Typography'
-import Divider from '@material-ui/core/Divider'
 import auth from './../auth/auth-helper'
-import {listNewsFeed} from './../posts/api-post.js'
-import NewPost from './../posts/NewPost'
+import {listMusicianFeed} from './../posts/api-post.js'
 import Post from './../posts/Post'
 
 const useStyles = makeStyles(theme => ({
@@ -32,7 +29,7 @@ export default function Newsfeed () {
     const abortController = new AbortController()
     const signal = abortController.signal
 
-    listNewsFeed({
+    listMusicianFeed({
       userId: jwt.user._id
     }, {
       t: jwt.token

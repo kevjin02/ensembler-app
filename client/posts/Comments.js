@@ -10,6 +10,10 @@ import {comment, uncomment} from './api-post.js'
 import {Link} from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    maxHeight: '200px',
+    // overflow: 'scroll'
+  },
   cardHeader: {
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1)
@@ -91,7 +95,7 @@ export default function Comments (props) {
       )
     }
 
-    return (<div>
+    return (<div className={classes.root}>
         <CardHeader
               avatar={
                 <Avatar className={classes.smallAvatar} src={'/api/users/photo/'+auth.isAuthenticated().user._id}/>
@@ -101,7 +105,7 @@ export default function Comments (props) {
                 multiline
                 value={text}
                 onChange={handleChange}
-                placeholder="Write something ..."
+                placeholder="Write public comment ..."
                 className={classes.commentField}
                 margin="normal"
                 />}

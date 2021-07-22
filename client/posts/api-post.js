@@ -31,9 +31,26 @@ const create = async (params, credentials, post) => {
     }
   }
   
-  const listNewsFeed = async (params, credentials, signal) => {
+  const listUserFeed = async (params, credentials, signal) => {
     try {
-      let response = await fetch('/api/posts/by/'+ params.userId, {
+      let response = await fetch('/api/posts/by/user/'+ params.userId, {
+        method: 'GET',
+        signal: signal,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + credentials.t
+        }
+      })    
+      return await response.json()
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  const listMusicianFeed = async (params, credentials, signal)  => {
+    try {
+      let response = await fetch('/api/posts/by/musician/'+ params.userId, {
         method: 'GET',
         signal: signal,
         headers: {
@@ -156,6 +173,7 @@ const create = async (params, credentials, post) => {
   }
 
   const follow = async (params, credentials, postId) => {
+    console.log(params)
     try {
       let response = await fetch('/api/posts/follow/', {
         method: 'PUT',
@@ -174,7 +192,7 @@ const create = async (params, credentials, post) => {
 
   const unfollow = async (params, credentials, postId) => {
     try {
-      let response = await fetch('/api/posts/follow/', {
+      let response = await fetch('/api/posts/unfollow/', {
         method: 'PUT',
         headers: {
           'Accept': 'application/json',
@@ -188,10 +206,78 @@ const create = async (params, credentials, post) => {
       console.log(err)
     }
   }
+
+  const apply = async (params, credentials, postId, appInfo) => {
+    try {
+      let response = await fetch('/api/posts/apply/', {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + credentials.t
+        },
+        body: JSON.stringify({userId:params.userId, instrument: appInfo.instrument, postId: postId, description: appInfo.description})
+      })
+      return await response.json()
+    } catch(err) {
+      console.log(err)
+    }
+  }
+  const approve = async (params, credentials, postId, appInfo) => {
+    try {
+      let response = await fetch('/api/posts/approve-app/', {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + credentials.t
+        },
+        body: JSON.stringify({userId:params.userId, postId: postId, appId: appInfo.appId, instrument: appInfo.instrument, musicianId: appInfo.musicianId})
+      })
+      return await response.json()
+    } catch(err) {
+      console.log(err)
+    }
+  }
+  const decline = async (params, credentials, postId, appInfo) => {
+    try {
+      let response = await fetch('/api/posts/decline-app/', {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + credentials.t
+        },
+        body: JSON.stringify({userId:params.userId, postId: postId, instrument: appInfo.instrument, appId: appInfo.appId})
+      })
+      return await response.json()
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  const removeMusician = async (params, credentials, postId) => {
+    console.log(params.member)
+    try {
+      let response = await fetch('/api/posts/remove-musician/', {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + credentials.t
+        },
+        body: JSON.stringify({userId:params.userId, memberId: params.memberId, postId: postId})
+      })
+      return await response.json()
+    } catch(err) {
+      console.log(err)
+    }
+  }
   
   
   export {
-    listNewsFeed,
+    listUserFeed,
+    listMusicianFeed,
     listByUser,
     create,
     remove,
@@ -201,6 +287,10 @@ const create = async (params, credentials, post) => {
     unfollow,
     getAllNearby,
     comment,
-    uncomment
+    uncomment,
+    apply,
+    approve,
+    decline,
+    removeMusician
   }
   

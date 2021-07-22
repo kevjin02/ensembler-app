@@ -49,7 +49,8 @@ export default function Login(props) {
       redirectToReferrer: false
   })
 
-  const clickSubmit = () => {
+  const clickSubmit = (event) => {
+    event.preventDefault()
     const user = {
       email: values.email || undefined,
       password: values.password || undefined
@@ -83,7 +84,9 @@ export default function Login(props) {
 
   return (
       <Card className={classes.card}>
+      <form onSubmit={clickSubmit}>
         <CardContent>
+        
           <Typography variant="h6" className={classes.title}>
             Log In
           </Typography>
@@ -97,8 +100,9 @@ export default function Login(props) {
           }
         </CardContent>
         <CardActions>
-          <Button color="primary" variant="contained" onClick={clickSubmit} className={classes.submit}>Submit</Button>
+          <Button type="submit" color="primary" variant="contained" className={classes.submit}>Submit</Button>
         </CardActions>
+        </form>
       </Card>
     )
 }

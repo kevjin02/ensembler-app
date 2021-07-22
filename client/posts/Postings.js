@@ -1,11 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
-import Typography from '@material-ui/core/Typography'
-import Divider from '@material-ui/core/Divider'
 import auth from './../auth/auth-helper'
 import {getAllNearby} from './api-post.js'
-import NewPost from './NewPost'
 import Post from './Post'
 
 const useStyles = makeStyles(theme => ({

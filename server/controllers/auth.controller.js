@@ -36,6 +36,7 @@ const login = async (req, res) => {
         name: user.name,
         email: user.email,
         musician: user.musician,
+        instrument: user.instrument,
         posts: user.posts
       }
     })

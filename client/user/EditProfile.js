@@ -96,8 +96,10 @@ export default function EditProfile({ match }) {
       t: jwt.token
     }, userData).then((data) => {
       if (data && data.error) {
+        console.log(data.error)
         setValues({...values, error: data.error})
       } else {
+        console.log('lol')
         setValues({...values, 'redirectToProfile': true})
       }
     })

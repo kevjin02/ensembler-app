@@ -7,9 +7,7 @@ import CardActions from '@material-ui/core/CardActions'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import Avatar from '@material-ui/core/Avatar'
 import Icon from '@material-ui/core/Icon'
-import PropTypes from 'prop-types'
 import {makeStyles} from '@material-ui/core/styles'
 import {create} from './api-post.js'
 import {Redirect} from 'react-router-dom'
@@ -69,6 +67,10 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(2),
     margin: 'auto'
   },
+
+  error: {
+    verticalAlign: 'middle'
+  }
 }))
 
 export default function NewPost (props){

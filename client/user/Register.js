@@ -3,7 +3,6 @@ import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Button from '@material-ui/core/Button'
-import ButtonGroup from '@material-ui/core/ButtonGroup'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import InputLabel from '@material-ui/core/InputLabel';
@@ -16,9 +15,11 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
 import {create} from './api-user.js'
-import {Link} from 'react-router-dom'
+import {Link, useLocation} from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -32,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     verticalAlign: 'middle'
   },
   title: {
-    marginTop: theme.spacing(2),
+    margin: theme.spacing(2),
     color: theme.palette.openTitle
   },
   textField: {
@@ -43,21 +44,37 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: 'auto',
     marginBottom: theme.spacing(2)
-  }
-}))
+  },
+  registerType: {
+    // marginTop: '30px',
+    color: theme.palette.primary.main,
+    borderColor: theme.palette.primary.main,
+    // borderWidth: '3px',
+    width: '180px;',
+    '&$selected': {
+      color: 'white',
+      '&:hover': {
+        color: theme.palette.primary.main,
+      },
+  },
+}}))
 
 export default function Register() {
+  let location = useLocation();
   const classes = useStyles()
+  
   const [values, setValues] = useState({
     name: '',
     password: '',
     email: '',
     open: false,
     error: '',
-    musician: false,
+    musician: (location.state == null ? false : location.state),
       location: '',
       instrument: ''
   })
+  console.log(''+values.musician)
+ 
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value })
@@ -86,20 +103,29 @@ export default function Register() {
     setValues({...values, musician: name !== 'User'})
   }
 
+  const changeUser1 = (event, nextView) => {
+    console.log(nextView)
+    setValues({...values, musician: nextView === 'true'});
+    console.log(values.musician)
+  };
+
     return (<div>
       <Card className={classes.card}>
         <CardContent>
           <Typography variant="h6" className={classes.title}>
             Register
           </Typography>
-          <ButtonGroup size="large" color="primary" aria-label="large outlined primary button group">
-            <Button label="User" onClick={changeUser('User')}>General User</Button>
-            <Button label= "Musician" onClick={changeUser('Musician')}>Musician</Button>
-            </ButtonGroup>
-          <TextField id="name" label="Name" className={classes.textField} value={values.name} onChange={handleChange('name')} margin="normal"/><br/>
+          <ToggleButtonGroup value={''+values.musician} color="primary" exclusive onChange={changeUser1} aria-label="large outlined primary button group">
+            <ToggleButton className={classes.registerType} value='false' >General User</ToggleButton>
+            <ToggleButton className={classes.registerType} value= 'true' >Musician</ToggleButton>
+            </ToggleButtonGroup>
+            <div>
+            <TextField id="name" label="Name" className={classes.textField} value={values.name} onChange={handleChange('name')} margin="normal"/><br/>
           <TextField id="email" type="email" label="Email" className={classes.textField} value={values.email} onChange={handleChange('email')} margin="normal"/><br/>
           <TextField id="password" type="password" label="Password" className={classes.textField} value={values.password} onChange={handleChange('password')} margin="normal"/>
-          <TextField id="location" type="location" label="City" className={classes.textField} value={values.location} onChange={handleChange('location')} margin="normal"/>
+          <TextField id="location" type="location" label="City" className={classes.textField} value={values.location} onChange={handleChange('location')} margin="normal"/>    
+            </div>
+  
           {values.musician && (
             <FormControl className={classes.textField}>
         <InputLabel htmlFor="instrument-native-simple">Instrument</InputLabel>
@@ -116,7 +142,7 @@ export default function Register() {
           <option value={"Violin"}>Violin</option>
           <option value={"Viola"}>Viola</option>
           <option value={"Cello"}>Cello</option>
-          <option value={"Quartet"}>Full Quartet</option>
+          {/* <option value={"Quartet"}>Full Quartet</option> */}
         </Select>
       </FormControl>
             

@@ -8,22 +8,21 @@ import Typography from '@material-ui/core/Typography'
 import Avatar from '@material-ui/core/Avatar'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
-import FavoriteIcon from '@material-ui/icons/Favorite'
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 import CommentIcon from '@material-ui/icons/Comment'
 import Divider from '@material-ui/core/Divider'
 import PropTypes from 'prop-types'
 import {makeStyles} from '@material-ui/core/styles'
 import {Link} from 'react-router-dom'
-import {remove, like, unlike} from './api-post.js'
+import {remove} from './api-post.js'
 import Button from '@material-ui/core/Button';
 import Comments from './Comments'
-import moment from 'moment'
-import { follow, unfollow } from './../user/api-user'
+import moment, { relativeTimeRounding } from 'moment'
+import { follow, unfollow } from './api-post'
+import EnsemblePositions from './EnsemblePositions'
 
 const useStyles = makeStyles(theme => ({
   card: {
-    maxWidth:600,
+    maxWidth:700,
     margin: 'auto',
     marginBottom: theme.spacing(3),
     backgroundColor: 'rgba(0, 0, 0, 0.06)'
@@ -57,6 +56,46 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
    margin: theme.spacing(1),
+  },
+  root: {
+    paddingTop: theme.spacing(2),
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+  },
+  bigAvatar: {
+    width: 60,
+    height: 60,
+    margin: 'auto'
+  },
+  gridList: {
+    width: 650,
+    height: 120,
+  },
+  tileText: {
+    textAlign: 'center',
+    marginTop: '5%',
+    
+  },
+  gridListTile: {
+    margin: '.7% auto',
+    textAlign: 'center',
+    
+    
+  },
+  applyButton: {
+    width: '100%',
+    height: '100%',
+    borderRadius: '10%',
+    borderWidth: '2px',
+    borderColor: 'rgba(0,0,0,0.25)',
+    backgroundColor: 'inherit',
+    cursor: 'pointer',
+    borderStyle: 'dashed',
+    '&:hover': {
+      borderColor: 'rgba(0,0,0,0.5)',
+    }
   }
 }))
 
@@ -66,11 +105,10 @@ export default function Post (props){
   const jwt = auth.isAuthenticated()
   const [values, setValues] = useState({
     comments: props.post.comments,
-    following: props.post.followers.includes(jwt.user._id)
+    following: props.post.followers.includes(jwt.user._id),
+    open: false
     
   })
-
-  
   
   // useEffect(() => {
   //   setValues({...values, like:checkLike(props.post.likes), likes: props.post.likes.length, comments: props.post.comments})
@@ -96,13 +134,21 @@ export default function Post (props){
     })
   }
 
+  const signUp = () => {
+    if(!jwt.user.musician)
+      return
+    setValues({...values, open: true})
+  }
+  const handleClose = () => {
+    setValues({...values, open: false})
+  }
+
   const followClick = () => {
     return followClickAction(follow)
   }
   const unfollowClick = () => {
     return followClickAction(unfollow)
   }
-
   const followClickAction = (followAction) => {
     followAction({
       userId: jwt.user._id
@@ -124,9 +170,9 @@ export default function Post (props){
             avatar={
               <Avatar src={'/api/users/photo/'+props.post.postedBy._id}/>
             }
-            action={auth.isAuthenticated().user.musician 
+            action={jwt.user.musician 
             ? ((values.following ? <Button className={classes.followButton} onClick={unfollowClick} variant="contained" color="secondary">Unfollow</Button> : <Button className={classes.followButton} onClick={followClick} variant="contained" color="primary">Follow</Button>) )
-            : ((props.post.postedBy._id === auth.isAuthenticated().user._id) &&
+            : ((props.post.postedBy._id === jwt.user._id) &&
               <IconButton onClick={deletePost}>
                 <DeleteIcon />
               </IconButton>
@@ -149,9 +195,11 @@ export default function Post (props){
           <Typography component="p" className={classes.text}>
             {props.post.description}
           </Typography>
-          <br/>
+          <EnsemblePositions post={props.post} userJwt={jwt}/>
+          
+
           <Typography component="p" className={classes.subtext}>
-            {'Posted: '+moment(props.post.eventTime.start).format('ddd, MMM Do YYYY, h:mm A z') }
+            {'Posted: '+moment(props.post.created).format('ddd, MMM Do YYYY, h:mm A z') }
           </Typography>
           {props.post.photo &&
             (<div className={classes.photo}>
