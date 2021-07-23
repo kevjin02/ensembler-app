@@ -18,7 +18,7 @@ router.route('/api/posts/by/musician/:userId')
   .get(authCtrl.requireLogin, postCtrl.listMusicianFeed)
 
 router.route('/api/posts/approve-app')
-  .put(authCtrl.requireLogin, postCtrl.approve)
+  .put(authCtrl.requireLogin, userCtrl.addReviewer, postCtrl.approve)
 router.route('/api/posts/decline-app')
   .put(authCtrl.requireLogin, postCtrl.decline)
 

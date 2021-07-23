@@ -110,6 +110,23 @@ const unfollow = async (params, credentials, unfollowId) => {
   }
 }
 
+const addReview = async (params, credentials, body) => {
+  try {
+    let response = await fetch('/api/users/add-review/', {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + credentials.t
+      },
+      body: JSON.stringify({userId: params.userId, reviewInfo: body})
+    })
+    return await response.json()
+  } catch(err) {
+    console.log(err)
+  }
+}
+
 export {
   create,
   list,
@@ -117,5 +134,6 @@ export {
   update,
   remove,
   follow,
-  unfollow
+  unfollow,
+  addReview
 }

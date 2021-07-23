@@ -22,6 +22,9 @@ router.route('/api/users/photo/:userId')
 router.route('/api/users/defaultphoto')
   .get(userCtrl.defaultPhoto)
 
+router.route('/api/users/add-review')
+  .put(authCtrl.requireLogin, userCtrl.addReview)
+
 
 router.route('/api/users/:userId')
   .get(authCtrl.requireLogin, userCtrl.read)

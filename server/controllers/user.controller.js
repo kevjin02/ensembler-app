@@ -28,7 +28,7 @@ const create = async (req, res) => {
  */
 const userByID = async (req, res, next, id) => {
   try {
-    let user = await User.findById(id).populate('posts', '_id').exec()
+    let user = await User.findById(id).populate('posts', '_id').populate('reviews.poster','_id name').exec()
     if (!user){
       console.log('user not found')
       return res.status('400').json({
@@ -141,6 +141,33 @@ const removeFollowing = async (req, res, next) => {
   }
 }
 
+const addReviewer = async(req, res, next) => {
+  console.log(req.body.musicianId, req.body.userId)
+  try {
+    await User.findByIdAndUpdate(req.body.musicianId, {$addToSet: {pastCustomers: req.body.userId}})
+    next()
+  } catch(err) {
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err)
+    })
+  }
+}
+
+const addReview = async(req, res) => {
+  try{
+    let result = await User.findByIdAndUpdate(req.body.userId, {$push: {reviews: req.body.reviewInfo}, $pull:{pastCustomers: req.body.reviewInfo.poster}}, {new:true})
+                       .populate('reviews.poster','_id name')
+                       .sort({'reviews.created':'-1'})
+                       .exec()
+    res.json(result.reviews)
+  } catch(err) {
+    console.log(err)
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err)
+    })
+  }
+}
+
 export default {
   create,
   userByID,
@@ -152,5 +179,7 @@ export default {
   remove,
   update,
   addFollowing,
-  removeFollowing
+  removeFollowing,
+  addReviewer,
+  addReview
 }

@@ -219,6 +219,7 @@ const create = async (req, res, next) => {
   }
 
   const approve = async (req, res) => {
+    console.log(req.body.musicianId, req.body.userId)
     try{
       let subDoc = await Post.findById(req.body.postId)
       subDoc.ensemble.forEach(element => {
@@ -232,6 +233,7 @@ const create = async (req, res, next) => {
                              .populate('applications.musician','_id name instrument')
                              .populate('ensemble.musician','_id name instrument')
                              .exec()
+
       res.json(result)
     }catch(err){
       return res.status(400).json({

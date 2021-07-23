@@ -123,7 +123,7 @@ export default function Register() {
             <TextField id="name" label="Name" className={classes.textField} value={values.name} onChange={handleChange('name')} margin="normal"/><br/>
           <TextField id="email" type="email" label="Email" className={classes.textField} value={values.email} onChange={handleChange('email')} margin="normal"/><br/>
           <TextField id="password" type="password" label="Password" className={classes.textField} value={values.password} onChange={handleChange('password')} margin="normal"/>
-          <TextField id="location" type="location" label="City" className={classes.textField} value={values.location} onChange={handleChange('location')} margin="normal"/>    
+         
             </div>
   
           {values.musician && (

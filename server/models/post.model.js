@@ -1,4 +1,12 @@
 import mongoose from 'mongoose'
+
+const ApplicationSchema = new mongoose.Schema({
+  musician: {type: mongoose.Schema.ObjectId, ref: 'User'}, 
+  instrument: {type: String},
+  created: { type: Date, default: Date.now }, 
+  description: {type: String, default: undefined, required: true}
+})
+
 const PostSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -26,10 +34,7 @@ const PostSchema = new mongoose.Schema({
   }],
   postedBy: {type: mongoose.Schema.ObjectId, ref: 'User'},
   followers: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
-  applications: [{musician: {type: mongoose.Schema.ObjectId, ref: 'User'}, 
-                  instrument: {type: String},
-                  created: { type: Date, default: Date.now }, 
-                  description: {type: String, default: undefined, required: true}}],
+  applications: {type: [ApplicationSchema]},
   created: {
     type: Date,
     default: Date.now

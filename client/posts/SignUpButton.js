@@ -10,6 +10,8 @@ import Button from '@material-ui/core/Button';
 import {apply} from './api-post'
 import Icon from '@material-ui/core/Icon'
 
+
+
 const useStyles = makeStyles(theme => ({
     card: {
       maxWidth:700,
@@ -122,13 +124,11 @@ const useStyles = makeStyles(theme => ({
             }, {
               t: props.userJwt.token
             }, props.post._id, {instrument: props.instrument, description: application.description || undefined}).then((data) => {
-              console.log(data)
               if (data.error) {
-                console.log('epic')
                 setApplication({...application, error: data.error})
               } else {
-                console.log('kaitlyn sucks')
                 setApplication(setDefault)
+                
               }
             })
           
@@ -150,12 +150,6 @@ return (<span><button className={classes.applyButton} onClick={signUp}  disabled
               <DialogTitle id='form-dialog-title' >Apply</DialogTitle>
               
               <DialogContent>
-              {
-            application.error && (<Typography component="p" color="error">
-              <Icon color="error" className={classes.error}>error</Icon>
-              {application.error}</Typography>)
-
-          }
                 <DialogContentText>
                   Please provide more information about you to be considered for this position.
                 </DialogContentText>
@@ -169,7 +163,7 @@ return (<span><button className={classes.applyButton} onClick={signUp}  disabled
                 <br/> {
             application.error && (<Typography component="p" color="error">
               <Icon color="error" className={classes.error}>error</Icon>
-              {values.error}</Typography>)
+              {application.error}</Typography>)
 
           }
                 <Button onClick={handleClose} color="primary">

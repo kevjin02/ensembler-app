@@ -1,5 +1,14 @@
 import mongoose from 'mongoose'
 import crypto from 'crypto'
+
+const ReviewSchema = new mongoose.Schema({
+  poster: {type: mongoose.Schema.ObjectId, ref: "User"},
+  rating: {type: Number, required: "Please leave a rating"},
+  created: { type: Date, default: Date.now }, 
+  description: {type: String, required: true}
+})
+
+
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -43,6 +52,9 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: function() { return (this.musician === true ? 'Please select an instrument' : false); }
   },
+  reviews: {type: [ReviewSchema]},
+
+  pastCustomers: [{type: mongoose.Schema.ObjectId, ref: "User"}],
   posts: [{type: mongoose.Schema.ObjectId, ref: "Post"}]
   
 })
