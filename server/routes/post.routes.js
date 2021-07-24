@@ -39,6 +39,9 @@ router.route('/api/posts/apply')
 
 router.route('/api/posts/remove-musician')
   .put(authCtrl.requireLogin, postCtrl.removeMusician)
+
+router.route('/api/posts/chat/:postId')
+  .get(authCtrl.requireLogin, postCtrl.loadChat)
   
 
 router.route('/api/posts/')

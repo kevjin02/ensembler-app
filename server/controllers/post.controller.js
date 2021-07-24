@@ -39,8 +39,9 @@ const create = async (req, res, next) => {
     
     try{
       let posts = await Post.find({postedBy: req.profile._id})
-                            .populate('comments.postedBy', '_id name')
+                            .populate('comments.postedBy', '_id name musician instrument')
                             .populate('postedBy', '_id name')
+                            .populate('ensembleChat.postedBy', '_id name musician instrument')
                             .populate('followers', '_id')
                             .populate('applications.musician','_id name instrument')
                             .populate('ensemble.musician','_id name instrument')
@@ -58,9 +59,11 @@ const create = async (req, res, next) => {
     try {
       let posts = await Post.find({'followers': {$in : req.profile._id}})
                              .populate('ensemble.musician','_id name instrument')
-                            .populate('comments.postedBy', '_id name')
+                            .populate('comments.postedBy', '_id name musician instrument')
+                            .populate('ensembleChat.postedBy', '_id name musician instrument')
                             .populate('postedBy', '_id name')
                             .sort('-created')
+                            .exec()
       res.json(posts)
     } catch(err) {
       return res.status(400).json({
@@ -109,7 +112,7 @@ const create = async (req, res, next) => {
     comment.postedBy = req.body.userId
     try{
       let result = await Post.findByIdAndUpdate(req.body.postId, {$push: {comments: comment}}, {new: true})
-                              .populate('comments.postedBy', '_id name')
+                              .populate('comments.postedBy', '_id name musician instrument')
                               .populate('postedBy', '_id name')
                               .exec()
       res.json(result)
@@ -123,7 +126,7 @@ const create = async (req, res, next) => {
     let comment = req.body.comment
     try{
       let result = await Post.findByIdAndUpdate(req.body.postId, {$pull: {comments: {_id: comment._id}}}, {new: true})
-                            .populate('comments.postedBy', '_id name')
+                            .populate('comments.postedBy', '_id name musician instrument')
                             .populate('postedBy', '_id name')
                             .exec()
       res.json(result)
@@ -175,7 +178,7 @@ const create = async (req, res, next) => {
   const listByUserArea = async(req, res, next) => {
     try { 
       let posts = await Post.find({$and: [{'eventTime.start': {$gte: new Date}}, {'followers': {$ne: req.profile._id}}]})
-                .populate('comments.postedBy', '_id name')
+                .populate('comments.postedBy', '_id name musician instrument')
                 .populate('postedBy', '_id name')
                 .populate('ensemble.musician','_id name instrument')
                 .sort('-created')
@@ -232,6 +235,7 @@ const create = async (req, res, next) => {
       let result = await Post.findByIdAndUpdate(req.body.postId, {$pull: {applications: {instrument: req.body.instrument}}, $set: {ensemble: subDoc.ensemble}}, {new: true})
                              .populate('applications.musician','_id name instrument')
                              .populate('ensemble.musician','_id name instrument')
+                             .populate('ensembleChat.postedBy', '_id name musician instrument')
                              .exec()
 
       res.json(result)
@@ -256,7 +260,6 @@ const create = async (req, res, next) => {
   }
 
   const removeMusician = async (req, res) => {
-    console.log(req.body.postId, req.body.memberId, )
     try{
       let subDoc = await Post.findById(req.body.postId)
                               .populate('ensemble.musician','_id name instrument')
@@ -269,9 +272,26 @@ const create = async (req, res, next) => {
       })
       let result = await Post.findByIdAndUpdate(req.body.postId, {$set: {ensemble: subDoc.ensemble}}, {new:true})
                             .populate('ensemble.musician','_id name instrument')
+                            .exec()
       res.json(result.ensemble)
     }catch(err){
       console.log(err)
+      return res.status(400).json({
+        error: errorHandler.getErrorMessage(err)
+      })
+    }
+  }
+
+  const loadChat = async(req, res) => {
+    try {
+      let result = await Post.findById(req.post._id)
+                             .populate('ensembleChat.postedBy', '_id name musician instrument')
+                             .exec()
+
+      console.log(result)
+
+      res.json(result.ensembleChat)
+    } catch(err){
       return res.status(400).json({
         error: errorHandler.getErrorMessage(err)
       })
@@ -297,6 +317,7 @@ const create = async (req, res, next) => {
     apply,
     approve,
     decline,
-    removeMusician
+    removeMusician,
+    loadChat
   }
   

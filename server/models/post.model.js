@@ -32,6 +32,12 @@ const PostSchema = new mongoose.Schema({
     created: { type: Date, default: Date.now },
     postedBy: { type: mongoose.Schema.ObjectId, ref: 'User'}
   }],
+  ensembleChat: [{
+    message: {type: String},
+    time: {type: Date, default: Date.now},
+    postedBy: {type: mongoose.Schema.ObjectId, ref: 'User'},
+    
+  }],
   postedBy: {type: mongoose.Schema.ObjectId, ref: 'User'},
   followers: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   applications: {type: [ApplicationSchema]},

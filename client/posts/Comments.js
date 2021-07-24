@@ -8,11 +8,14 @@ import PropTypes from 'prop-types'
 import {makeStyles} from '@material-ui/core/styles'
 import {comment, uncomment} from './api-post.js'
 import {Link} from 'react-router-dom'
+import theme from '../theme'
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    maxHeight: '200px',
-    // overflow: 'scroll'
+    maxHeight: '500px',
+    overflow: 'auto'
   },
   cardHeader: {
     paddingTop: theme.spacing(1),
@@ -26,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     width: '96%'
   },
   commentText: {
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     padding: theme.spacing(1),
     margin: `2px ${theme.spacing(2)}px 2px 2px`
   },
@@ -49,9 +52,14 @@ export default function Comments (props) {
   const handleChange = event => {
     setText(event.target.value)
   }
-  const addComment = (event) => {
+
+  const addCommentEnter = (event) => {
     if(event.keyCode == 13 && event.target.value){
       event.preventDefault()
+      addComment()
+    }
+  }
+  const addComment = () => {
       comment({
         userId: jwt.user._id
       }, {
@@ -64,7 +72,7 @@ export default function Comments (props) {
           props.updateComments(data.comments)
         }
       })
-    }
+    
   }
 
   const deleteComment = comment => event => {
@@ -82,14 +90,16 @@ export default function Comments (props) {
   }
 
     const commentBody = item => {
+      console.log(item.postedBy)
       return (
-        <p className={classes.commentText}>
-          <Link to={"/user/" + item.postedBy._id}>{item.postedBy.name}</Link><br/>
+        <p className={classes.commentText} style={{backgroundColor: (props.postedbyId === item.postedBy._id ? '#fff1f5' : 'white')}}>
+          <Link to={"/user/" + item.postedBy._id}>{item.postedBy.name}</Link> - {item.postedBy.musician ? item.postedBy.instrument : 'Client'}<br/>
           {item.text}
           <span className={classes.commentDate}>
-            {(new Date(item.created)).toDateString()} |
+            {(new Date(item.created)).toDateString()}
             {auth.isAuthenticated().user._id === item.postedBy._id &&
-              <Icon onClick={deleteComment(item)} className={classes.commentDelete}>delete</Icon> }
+            <span> |<Icon onClick={deleteComment(item)} className={classes.commentDelete}>delete</Icon> </span>
+              }
           </span>
         </p>
       )
@@ -101,13 +111,16 @@ export default function Comments (props) {
                 <Avatar className={classes.smallAvatar} src={'/api/users/photo/'+auth.isAuthenticated().user._id}/>
               }
               title={ <TextField
-                onKeyDown={addComment}
+                onKeyDown={addCommentEnter}
                 multiline
                 value={text}
                 onChange={handleChange}
                 placeholder="Write public comment ..."
                 className={classes.commentField}
                 margin="normal"
+                InputProps={{endAdornment:<InputAdornment position="end">
+                  {text && <Button onClick={addComment}>Send</Button>}
+              </InputAdornment>}}
                 />}
               className={classes.cardHeader}
         />
@@ -116,6 +129,7 @@ export default function Comments (props) {
                       avatar={
                         <Avatar className={classes.smallAvatar} src={'/api/users/photo/'+item.postedBy._id}/>
                       }
+                      
                       title={commentBody(item)}
                       className={classes.cardHeader}
                       key={i}/>

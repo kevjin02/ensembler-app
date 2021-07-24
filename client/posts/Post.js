@@ -16,9 +16,11 @@ import {Link} from 'react-router-dom'
 import {remove} from './api-post.js'
 import Button from '@material-ui/core/Button';
 import Comments from './Comments'
-import moment, { relativeTimeRounding } from 'moment'
+import moment from 'moment'
 import { follow, unfollow } from './api-post'
 import EnsemblePositions from './EnsemblePositions'
+import EnsembleChat from './EnsembleChat'
+import Dialog from '@material-ui/core/Dialog';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -56,6 +58,7 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
    margin: theme.spacing(1),
+   float: 'right'
   },
   root: {
     paddingTop: theme.spacing(2),
@@ -96,7 +99,11 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       borderColor: 'rgba(0,0,0,0.5)',
     }
-  }
+  },
+  dialogPaper : {
+    minHeight: '80vh',
+    maxHeight: '80vh'
+},
 }))
 
 export default function Post (props){
@@ -134,14 +141,13 @@ export default function Post (props){
     })
   }
 
-  const signUp = () => {
-    if(!jwt.user.musician)
-      return
+  const viewChat = () => {
     setValues({...values, open: true})
   }
   const handleClose = () => {
     setValues({...values, open: false})
   }
+
 
   const followClick = () => {
     return followClickAction(follow)
@@ -164,7 +170,14 @@ export default function Post (props){
     })
   }
 
+  const isAuthorized = () => {
+    if(props.post.postedBy._id === jwt.user._id)
+      return true
+    return props.post.ensemble.find((item)=> (item.musician && (item.musician._id == jwt.user._id)))
+  }
+
     return (
+      <span>
       <Card className={classes.card}>
         <CardHeader
             avatar={
@@ -209,15 +222,21 @@ export default function Post (props){
                 />
             </div>)}
         </CardContent>
-        <CardActions>
+        {isAuthorized() && <CardActions>
           
-              <IconButton className={classes.button} aria-label="Comment" color="secondary">
-                <CommentIcon/>
-              </IconButton> <span>{values.comments.length}</span>
-        </CardActions>
+              <Button className={classes.button} onClick={viewChat} aria-label="Comment" color="black">
+                <CommentIcon style={{paddingRight: '5px'}}/> {' Open Musician Chat'}
+              </Button>
+        </CardActions>}
         <Divider/>
-        <Comments postId={props.post._id} comments={values.comments} updateComments={updateComments}/>
+        <Comments postId={props.post._id} postedbyId={props.post.postedBy._id} comments={values.comments} updateComments={updateComments}/>
       </Card>
+
+      <Dialog fullWidth={true} fullHeight={true} classes={{paper: classes.dialogPaper}} open={values.open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <EnsembleChat handleClose={handleClose} postChat = {props.post.ensembleChat} postId={props.post._id}/>
+      </Dialog>
+      </span>
+      
     )
   
 }
