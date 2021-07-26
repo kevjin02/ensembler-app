@@ -44,6 +44,14 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: "Please enter where you are based"
   },
+  lat: {
+    type: Number,
+    required: 'Please enter a valid address'
+  },
+  long: {
+    type: Number,
+    required: 'Please enter a valid address'
+  },
   musician: {
     type: Boolean,
     default: false

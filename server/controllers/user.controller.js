@@ -155,10 +155,17 @@ const addReviewer = async(req, res, next) => {
 
 const addReview = async(req, res) => {
   try{
+    if(!(req.body.reviewInfo.rating && req.body.reviewInfo.description)){
+        return res.status('400').json({
+          error: "Please providing a rating and description"
+      })
+    }
+    
     let result = await User.findByIdAndUpdate(req.body.userId, {$push: {reviews: req.body.reviewInfo}, $pull:{pastCustomers: req.body.reviewInfo.poster}}, {new:true})
                        .populate('reviews.poster','_id name')
                        .sort({'reviews.created':'-1'})
                        .exec()
+    console.log(result.reviews)
     res.json(result.reviews)
   } catch(err) {
     console.log(err)
@@ -175,7 +182,6 @@ export default {
   list,
   photo,
   defaultPhoto,
-  
   remove,
   update,
   addFollowing,

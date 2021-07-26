@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react'
+import auth from './../auth/auth-helper'
+import {listByMusicianArea} from './api-post.js'
+import Post from './Post'
+
 import {makeStyles} from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
-import auth from './../auth/auth-helper'
-import {getAllNearby} from './api-post.js'
-import Post from './Post'
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -20,6 +21,8 @@ const useStyles = makeStyles(theme => ({
     minHeight: 330
   }
 }))
+
+
 export default function Postings () {
   const classes = useStyles()
   const [posts, setPosts] = useState([])
@@ -28,7 +31,7 @@ export default function Postings () {
   useEffect(() => {
     const abortController = new AbortController()
     const signal = abortController.signal
-    getAllNearby({
+    listByMusicianArea({
       userId: jwt.user._id
     }, {
       t: jwt.token
@@ -37,7 +40,6 @@ export default function Postings () {
         console.log(data.error)
       } else {
         setPosts(data)
-        console.log(data)
       }
     })
     return function cleanup(){
@@ -46,11 +48,6 @@ export default function Postings () {
 
   }, [])
 
-  const addPost = (post) => {
-    const updatedPosts = [...posts]
-    updatedPosts.unshift(post)
-    setPosts(updatedPosts)
-  }
   const removePost = (post) => {
     const updatedPosts = [...posts]
     const index = updatedPosts.indexOf(post)
@@ -65,7 +62,7 @@ export default function Postings () {
             return <Post post={item} key={i} onRemove={removePost}/>
           })
         }
-      </div>
+        </div>
       </Card>
     )
 }

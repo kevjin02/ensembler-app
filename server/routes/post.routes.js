@@ -5,46 +5,44 @@ import postCtrl from '../controllers/post.controller'
 
 const router = express.Router()
 
-router.route('/api/posts/follow')
+router.route('/api/posts/follow/:postId')
   .put(authCtrl.requireLogin, postCtrl.follow)
-router.route('/api/posts/unfollow')
+
+router.route('/api/posts/unfollow/:postId')
   .put(authCtrl.requireLogin, postCtrl.unfollow)
+
 router.route('/api/posts/new/:userId') 
   .post(authCtrl.requireLogin, postCtrl.create)
 
-router.route('/api/posts/by/user/:userId')
+router.route('/api/posts/user/:userId')
   .get(authCtrl.requireLogin, postCtrl.listByUser)
-router.route('/api/posts/by/musician/:userId')
-  .get(authCtrl.requireLogin, postCtrl.listMusicianFeed)
 
-router.route('/api/posts/approve-app')
-  .put(authCtrl.requireLogin, userCtrl.addReviewer, postCtrl.approve)
-router.route('/api/posts/decline-app')
-  .put(authCtrl.requireLogin, postCtrl.decline)
+router.route('/api/posts/musician/:userId')
+  .get(authCtrl.requireLogin, postCtrl.listMusicianFeed) 
 
-  router.route('/api/posts/for/:userId') // postCtrl.listByUserArea
-  .get(authCtrl.requireLogin, postCtrl.listByUserArea)
+router.route('/api/posts/approve-app/:postId')
+  .put(authCtrl.requireLogin, postCtrl.isPoster, userCtrl.addReviewer, postCtrl.approve)
 
-router.route('/api/posts/feed/:userId')
-  .get(authCtrl.requireLogin, postCtrl.postByID)
+router.route('/api/posts/decline-app/:postId')
+  .put(authCtrl.requireLogin, postCtrl.isPoster, postCtrl.decline)
 
-router.route('/api/posts/comment')
+router.route('/api/posts/for/:userId') 
+  .get(authCtrl.requireLogin, postCtrl.listByMusicianArea)
+
+router.route('/api/posts/comment/:postId')
   .put(authCtrl.requireLogin, postCtrl.comment)
-router.route('/api/posts/uncomment')
+
+router.route('/api/posts/uncomment/:postId')
   .put(authCtrl.requireLogin, postCtrl.uncomment)
 
-router.route('/api/posts/apply')
-  .get(authCtrl.requireLogin, postCtrl.showApplications)
+router.route('/api/posts/apply/:postId')
   .put(authCtrl.requireLogin, postCtrl.apply)
 
-router.route('/api/posts/remove-musician')
-  .put(authCtrl.requireLogin, postCtrl.removeMusician)
+router.route('/api/posts/remove-musician/:postId')
+  .put(authCtrl.requireLogin, postCtrl.isPoster,postCtrl.removeMusician)
 
 router.route('/api/posts/chat/:postId')
   .get(authCtrl.requireLogin, postCtrl.loadChat)
-  
-
-router.route('/api/posts/')
 
 router.route('/api/posts/:postId')
   .delete(authCtrl.requireLogin, postCtrl.isPoster, postCtrl.remove)

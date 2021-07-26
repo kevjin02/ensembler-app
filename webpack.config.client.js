@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const Dotenv = require('dotenv-webpack');
 const CURRENT_WORKING_DIR = process.cwd()
 
 const config = {
@@ -32,13 +33,14 @@ const config = {
     },  
     plugins: [
           new webpack.HotModuleReplacementPlugin(),
-          new webpack.NoEmitOnErrorsPlugin()
+          new webpack.NoEmitOnErrorsPlugin(),
+          new Dotenv()
     ],
     resolve: {
         alias: {
           'react-dom': '@hot-loader/react-dom'
         }
-    }
+    },
 }
 
 module.exports = config

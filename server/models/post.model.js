@@ -24,6 +24,14 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: 'General location is required'
   },
+  lat: {
+    type: Number,
+    required: 'Please enter a valid address'
+  },
+  long: {
+    type: Number,
+    required: 'Please enter a valid address'
+  },
   ensemble: [{
     instrument: {type: String},
     musician: {type: mongoose.Schema.ObjectId, required: false, ref: 'User'}}],

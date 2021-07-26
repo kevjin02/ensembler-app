@@ -1,15 +1,16 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
 import violinImg from './../assets/images/violin.jpg'
-import Grid from '@material-ui/core/Grid'
-
-import Button from '@material-ui/core/Button';
 import {Link} from 'react-router-dom'
+
+import { makeStyles } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 
-import { faClock, faMoneyBillWave, faHandshake, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock, faMoneyBillWave, faHandshake, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -29,10 +30,6 @@ const useStyles = makeStyles(theme => ({
         color: '#3f4771'
       } 
     },
-
-    
-
-  
     icon: {
       marginRight: theme.spacing(2),
     },
@@ -58,7 +55,7 @@ const useStyles = makeStyles(theme => ({
       flexDirection: 'column',
     },
     cardMedia: {
-      paddingTop: '56.25%', // 16:9
+      paddingTop: '56.25%',
     },
     cardContent: {
       flexGrow: 1,
@@ -95,115 +92,131 @@ const useStyles = makeStyles(theme => ({
     },
   }))
 
+/**
+ * Default home view when not logged in
+ */
 export default function HomeView() {
-    const classes = useStyles()
-    return (<div ><main><div className={classes.heroContent}>
-        <Container className={classes.titleImage}  maxWidth="sm">
-          <Typography component="h1" variant="h2"  gutterBottom>
-            <strong>Assemble Your Ensemble</strong>
-          </Typography>
-          <Typography variant="h5" paragraph>
-            Find talented musicians in your area for your next big event.
-          </Typography>
-          <div className={classes.heroButtons}>
-            <Grid container spacing={2}>
-              <Grid item>
-              <Link to={{pathname:'/register', state:false}}>
-              <Button className={classes.findMusicButton} variant="contained" color="primary">
-                  Find musicians
-                </Button>
-              </Link>
-                
-              </Grid>
-              <Grid item>
-              <Link to={{pathname:'/register', state:true}}>
-                <Button className={classes.findWorkButton}  variant="outlined">
-                  Find work 
-                </Button>
-                </Link>
-              </Grid>
-            </Grid>
-          </div>
-        </Container>
-      </div>
-      <Container className={classes.cardGrid} maxWidth="md">
-        {/* End hero unit */}
-        <Grid container spacing={8}>
-        <Grid item xs={12} sm={6} md={4} >
-        <FontAwesomeIcon size='3x' icon={faMoneyBillWave} />
-        <Typography className={classes.featuresTitle} variant="h4">
-                    Cost effective.
-                  </Typography>
-                  <Typography component="h3">
-                  Find quality musicians without having to pay excessively for expensive quartets.
-                  </Typography>
-        </Grid>
-        <Grid item  xs={12} sm={6} md={4}>
-        <FontAwesomeIcon size='3x' icon={faClock} />
-        
-        <Typography className={classes.featuresTitle} variant="h4">
-                    Easy to use.
-                  </Typography>
-                  <Typography  component="h3">
-                  Post your event, review applications, and organize your ensemble all in one place.
-                  </Typography>
-        </Grid>
-        <Grid item  xs={12} sm={6} md={4}>
-        <FontAwesomeIcon size='3x' icon={faHandshake} />
 
-        <Typography className={classes.featuresTitle} variant="h4">
-                    Reliable.
-                  </Typography>
-                  <Typography component="h3">
-                  All musicians must submit an application that is reviewed by our moderators.
-                  </Typography>
-        </Grid>
-          {/*cards.map((card) => (
-            <Grid item key={card} xs={12} sm={6} md={4}>
-              <Card className={classes.card}>
-                <CardMedia
-                  className={classes.cardMedia}
-                  image="https://source.unsplash.com/random"
-                  title="Image title"
-                />
-                <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    Heading
-                  </Typography>
-                  <Typography>
-                    This is a media card. You can use this section to describe the content.
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small" color="primary">
-                    View
-                  </Button>
-                  <Button size="small" color="primary">
-                    Edit
-                  </Button>
-                </CardActions>
-              </Card>
+    const classes = useStyles()
+
+    return (
+      <main>
+        <div className={classes.heroContent}>
+
+          <Container className={classes.titleImage}  maxWidth="sm">
+
+            <Typography component="h1" variant="h2"  gutterBottom>
+              <strong>Assemble Your Ensemble</strong>
+            </Typography>
+
+            <Typography variant="h5" paragraph>
+              Find talented musicians in your area for your next big event.
+            </Typography>
+
+            <div className={classes.heroButtons}>
+
+              <Grid container spacing={2}>
+
+                <Grid item>
+
+                  <Link to={{pathname:'/register', state:false}}>
+                    <Button className={classes.findMusicButton} variant="contained" color="primary">
+                        Find musicians
+                    </Button>
+                  </Link>
+                    
+                </Grid>
+                <Grid item>
+                  <Link to={{pathname:'/register', state:true}}>
+                    <Button className={classes.findWorkButton}  variant="outlined">
+                      Find work 
+                    </Button>
+                  </Link>
+
+                </Grid>
+
+              </Grid>
+
+            </div>
+
+          </Container>
+
+        </div>
+
+        <Container className={classes.cardGrid} maxWidth="md">
+
+          <Grid container spacing={8}>
+
+            <Grid item xs={12} sm={6} md={4} >
+
+              <FontAwesomeIcon size='3x' icon={faMoneyBillWave} />
+
+              <Typography className={classes.featuresTitle} variant="h4">
+                  Cost effective.
+              </Typography>
+
+              <Typography component="h3">
+                Find quality musicians without having to pay excessively for expensive quartets.
+              </Typography>
+              
             </Grid>
-          ))*/}
-        </Grid>
-      </Container>
-      <Container className={classes.contactMe} maxWidth='lg'>
-      <Typography component="h1" variant="h2"  gutterBottom>
-            <strong>Have ideas to expand this application?</strong>
+
+            <Grid item  xs={12} sm={6} md={4}>
+
+              <FontAwesomeIcon size='3x' icon={faClock} />
+              
+              <Typography className={classes.featuresTitle} variant="h4">
+                Easy to use.
+              </Typography>
+
+              <Typography  component="h3">
+                Post your event, review applications, and organize your ensemble all in one place.
+              </Typography>
+
+            </Grid>
+
+            <Grid item  xs={12} sm={6} md={4}>
+
+              <FontAwesomeIcon size='3x' icon={faHandshake} />
+
+              <Typography className={classes.featuresTitle} variant="h4">
+                Reliable.
+              </Typography>
+
+              <Typography component="h3">
+                All musicians must submit an application that is reviewed by our moderators.
+              </Typography>
+
+            </Grid>
+
+          </Grid>
+
+        </Container>
+
+        <Container className={classes.contactMe} maxWidth='lg'>
+
+          <Typography component="h1" variant="h2" gutterBottom>
+              <strong>Have any additional questions?</strong>
           </Typography>
-          <Typography variant="h5"  paragraph>
-            Don't hesitate to give suggestions and provide feedback.
+
+          <Typography variant="h5" paragraph>
+            Let our team know!
           </Typography>
-          <a style={{color: 'inherit'}} href='mailto:kevjin2002@gmail.com?subject=Ensembler Project'>
-          <Button className={classes.contactMeButton} variant="outlined" color="inherit">
-                  <FontAwesomeIcon icon={faEnvelope} />
-                  <Typography className={classes.email} component="p">
-                          Contact me
-          </Typography>
-                </Button>
+
+          <a style={{color: 'inherit'}}>
+
+            <Button className={classes.contactMeButton} variant="outlined" color="inherit">
+              <FontAwesomeIcon icon={faEnvelope} />
+
+              <Typography className={classes.email} component="p">
+                Contact us
+              </Typography>
+
+            </Button>
+
           </a> 
-      </Container>
-    </main>
-    {/* Footer */}
-    </div>)
+
+        </Container>
+        
+    </main>)
 }
