@@ -16,17 +16,6 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: theme.spacing(3),
     paddingLeft: theme.spacing(3)
   },
-  nopostscard: {
-    paddingTop: theme.spacing(3),
-  },
-  title: {
-    padding:`${theme.spacing(3)}px ${theme.spacing(2.5)}px ${theme.spacing(2)}px`,
-    color: theme.palette.openTitle,
-    fontSize: '1em'
-  },
-  media: {
-    minHeight: 330
-  }
 }))
 
 /**

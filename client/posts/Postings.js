@@ -12,22 +12,21 @@ const useStyles = makeStyles(theme => ({
     paddingTop: 0,
     paddingBottom: theme.spacing(3)
   },
-  title: {
-    padding:`${theme.spacing(3)}px ${theme.spacing(2.5)}px ${theme.spacing(2)}px`,
-    color: theme.palette.openTitle,
-    fontSize: '1em'
-  },
-  media: {
-    minHeight: 330
-  }
 }))
 
-
+  /**
+ * Post (parent: MainRouter)
+ * @returns {Object} - Page with list of postings for musician by their city
+ */
 export default function Postings () {
+
   const classes = useStyles()
+
   const [posts, setPosts] = useState([])
+
   const jwt = auth.isAuthenticated()
 
+  //Load by musician city on mount
   useEffect(() => {
     const abortController = new AbortController()
     const signal = abortController.signal
@@ -48,6 +47,8 @@ export default function Postings () {
 
   }, [])
 
+
+  //remove post from postings
   const removePost = (post) => {
     const updatedPosts = [...posts]
     const index = updatedPosts.indexOf(post)

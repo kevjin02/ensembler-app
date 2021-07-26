@@ -63,46 +63,6 @@ const useStyles = makeStyles(theme => ({
    margin: theme.spacing(1),
    float: 'right'
   },
-  root: {
-    paddingTop: theme.spacing(2),
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-  },
-  bigAvatar: {
-    width: 60,
-    height: 60,
-    margin: 'auto'
-  },
-  gridList: {
-    width: 650,
-    height: 120,
-  },
-  tileText: {
-    textAlign: 'center',
-    marginTop: '5%',
-    
-  },
-  gridListTile: {
-    margin: '.7% auto',
-    textAlign: 'center',
-    
-    
-  },
-  applyButton: {
-    width: '100%',
-    height: '100%',
-    borderRadius: '10%',
-    borderWidth: '2px',
-    borderColor: 'rgba(0,0,0,0.25)',
-    backgroundColor: 'inherit',
-    cursor: 'pointer',
-    borderStyle: 'dashed',
-    '&:hover': {
-      borderColor: 'rgba(0,0,0,0.5)',
-    }
-  },
   dialogPaper : {
     minHeight: '80vh',
     maxHeight: '80vh'
@@ -110,6 +70,13 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
+  /**
+ * Post (parent: Postings)
+ * @param {Object} props -  item    : post object
+ *                          onRemove : parent function to remove a post
+ * 
+ * @returns {Object} - A posting
+ */
 export default function Post (props){
 
   const classes = useStyles()
@@ -124,10 +91,13 @@ export default function Post (props){
     
   })
 
+  //update comments section when comment is posted
   const updateComments = (comments) => {
     setValues({...values, comments: comments})
   }
 
+
+  //delete a post from api-post
   const deletePost = () => {   
     remove({
       postId: props.post._id
@@ -143,33 +113,41 @@ export default function Post (props){
     handleConfirmClose()
   }
 
+
+  //open ensemble chat
   const viewChat = () => {
     setValues({...values, open: true})
   }
 
+
+  //open confirm window
   const confirmDelete = () => {
     setValues({...values, confirmOpen: true})
   }
 
-
+  //close ensemble chat
   const handleClose = () => {
     setValues({...values, open: false})
   }
+
+  //close confirm window
   const handleConfirmClose = () => {
     setValues({...values, confirmOpen: false})
   }
 
 
+  //helper function to followclickaction
   const followClick = () => {
     return followClickAction(follow)
   }
 
-
+  //helper function to followclickaction
   const unfollowClick = () => {
     return followClickAction(unfollow)
   }
 
 
+  //Follow or unfollow post at api-post
   const followClickAction = (followAction) => {
     followAction({
       postId: props.post._id
@@ -184,6 +162,8 @@ export default function Post (props){
     })
   }
 
+
+  //Check if user is authorized to open musician chat
   const isAuthorized = () => {
     if(props.post.postedBy._id === jwt.user._id)
       return true

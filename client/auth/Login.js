@@ -92,7 +92,6 @@ export default function Login(props) {
    * 
    */
   const handleChange = name => event => {
-    console.log(props)
     setValues({ ...values, [name]: event.target.value })
   }
 

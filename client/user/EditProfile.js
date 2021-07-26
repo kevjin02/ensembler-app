@@ -52,10 +52,16 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-
+  /**
+ * EditProfile (parent: MainRouter)
+ * @param {Object} {match} - credentials from PrivateRoute
+ * 
+ * @returns {Object} - Edit profile page
+ */
 export default function EditProfile({ match }) {
 
   const classes = useStyles()
+
   const [values, setValues] = useState({
     name: '',
     about: '',
@@ -71,6 +77,7 @@ export default function EditProfile({ match }) {
   const jwt = auth.isAuthenticated()
 
 
+  //Display user's current information on mount
   useEffect(() => {
     const abortController = new AbortController()
     const signal = abortController.signal
@@ -91,8 +98,10 @@ export default function EditProfile({ match }) {
   }, [match.params.userId])
   
 
+  //submit to api-user to update profile
   const clickSubmit = () => {
 
+    //Check if password and confirm password match
     if(values.cpassword !== values.password){
       setValues({...values, 'error': 'Passwords must match'})
       return
@@ -119,6 +128,7 @@ export default function EditProfile({ match }) {
   }
 
 
+  //update state to new input changes
   const handleChange = name => event => {
     const value = name === 'photo'
       ? event.target.files[0]
@@ -132,6 +142,7 @@ export default function EditProfile({ match }) {
                 : '/api/users/defaultphoto'
 
 
+  //redirect to user profile once updated
   if (values.redirectToProfile) {
     return (<Redirect to={'/user/' + values.id}/>)
   }

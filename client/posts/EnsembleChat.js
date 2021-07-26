@@ -18,20 +18,13 @@ const io = require('socket.io-client')
 const socket = io() 
 
 const useStyles = makeStyles(theme => ({
-    button: {
-        margin: theme.spacing(1),
-       },
-       closeButton: {
+    closeButton: {
         float: 'right'
-    },
-    dialogPaper : {
-        minHeight: '80vh',
-        maxHeight: '80vh'
     },
     messageHeader: {
         paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    minWidth: '400px'
+        paddingBottom: theme.spacing(1),
+        minWidth: '400px'
     },
     cardHeader: {
         display: 'auto',
@@ -47,15 +40,15 @@ const useStyles = makeStyles(theme => ({
         width: 25,
         height: 25
       },
-      commentField: {
+      messageField: {
         width: '96%'
       },
-      commentText: {
+      messageText: {
         // backgroundColor: 'white',
         padding: theme.spacing(1),
         margin: `2px ${theme.spacing(2)}px 2px 2px`
       },
-      commentDate: {
+      messageDate: {
         display: 'block',
         color: 'gray',
         fontSize: '0.8em'
@@ -172,10 +165,10 @@ export default function EnsembleChat(props) {
   //helper function for message body
   const messageBody = item => {
       return (
-        <p className={classes.commentText} style={{backgroundColor: (jwt.user._id === item.postedBy._id ? '#fff1f5' : 'white')}}>
+        <p className={classes.messageText} style={{backgroundColor: (jwt.user._id === item.postedBy._id ? '#fff1f5' : 'white')}}>
           <Link to={"/user/" + item.postedBy._id}>{item.postedBy.name}</Link> - {item.postedBy.musician ? item.postedBy.instrument : 'Client'}<br/>
           {item.message}
-          <span className={classes.commentDate}>
+          <span className={classes.messageDate}>
             {moment(item.time).format('ddd, MMM Do YYYY, h:mm A z')}
           </span>
         </p>)
@@ -231,7 +224,7 @@ export default function EnsembleChat(props) {
               value={chat.text}
               onChange={handleChange}
               placeholder="Write a message ..."
-              className={classes.commentField}
+              className={classes.messageField}
               margin="normal"
               InputProps={{endAdornment:<InputAdornment position="end">
                 {chat.text && <Button onClick={addMessage}>Send</Button>}

@@ -1,7 +1,7 @@
 'use strict'
 
 /**
- * Get unique error field name
+ * Get unique error message
  */
 const getUniqueErrorMessage = (err) => {
     let output
@@ -16,7 +16,7 @@ const getUniqueErrorMessage = (err) => {
 }
 
 /**
- * Get the error message from error object
+ * Create user-friendly error message
  */
 const getErrorMessage = (err) => {
     let message = ''

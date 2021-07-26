@@ -15,9 +15,6 @@ const useStyles = makeStyles(theme => ({
         boxShadow: 'none',
         width: '550px'
     },
-    closeButton: {
-        float: 'right'
-    },
     buttons: {
         marginTop: '5px'
     },

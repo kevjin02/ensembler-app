@@ -11,42 +11,6 @@ import Typography from '@material-ui/core/Typography'
 import Avatar from '@material-ui/core/Avatar'
 
 const useStyles = makeStyles(theme => ({
-    card: {
-      maxWidth:700,
-      margin: 'auto',
-      marginBottom: theme.spacing(3),
-      backgroundColor: 'rgba(0, 0, 0, 0.06)'
-    },
-    cardContent: {
-      backgroundColor: 'white',
-      padding: `${theme.spacing(2)}px 0px`
-    },
-    cardHeader: {
-      paddingTop: theme.spacing(1),
-      paddingBottom: theme.spacing(1)
-    },
-    text: {
-      margin: theme.spacing(2)
-    },
-    followButton: {
-      marginTop: theme.spacing(1)
-    },
-    subtext: {
-      margin: theme.spacing(2),
-      color:'#666666',
-      fontSize: '80%'
-    },
-    photo: {
-      textAlign: 'center',
-      backgroundColor: '#f2f5f4',
-      padding:theme.spacing(1)
-    },
-    media: {
-      height: 200
-    },
-    button: {
-     margin: theme.spacing(1),
-    },
     root: {
       paddingTop: theme.spacing(2),
       display: 'flex',
@@ -71,10 +35,6 @@ const useStyles = makeStyles(theme => ({
       margin: '.7% auto',
       textAlign: 'center',
     },
-    gridListTileLong: {
-        margin: '.7% auto',
-        textAlign: 'center',
-      },
     applyButton: {
       width: '100%',
       height: '100%',
@@ -84,20 +44,6 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: 'inherit',
       borderStyle: 'dashed',
     },
-    error: {
-      verticalAlign: 'middle'
-    },
-    removeMusician: {
-      float: 'right',
-      position: 'absolute',
-      marginLeft: '33px',
-      height: '5px',
-      width: '5px'
-    },
-    deleteIcon: {
-     height: '20px',
-     width: '20px'
-    }
   }))
 
   /**

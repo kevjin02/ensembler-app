@@ -68,7 +68,7 @@ const UserSchema = new mongoose.Schema({
 })
 
 UserSchema
-  .virtual('password')
+  .virtual('password')          //encrypt password
   .set(function(password) {
     this._password = password
     this.salt = this.makeSalt()
@@ -78,7 +78,7 @@ UserSchema
     return this._password
   })
 
-UserSchema.path('hashed_password').validate(function(v) {
+UserSchema.path('hashed_password').validate(function(v) {  //make sure password is valid
   if (this._password && this._password.length < 6) {
     this.invalidate('password', 'Password must be at least 6 characters.')
   }
@@ -88,7 +88,7 @@ UserSchema.path('hashed_password').validate(function(v) {
 }, null)
 
 UserSchema.methods = {
-  authenticate: function(plainText) {
+  authenticate: function(plainText) {                          //check password
     return this.encryptPassword(plainText) === this.hashed_password
   },
   encryptPassword: function(password) {
@@ -102,7 +102,7 @@ UserSchema.methods = {
       return ''
     }
   },
-  makeSalt: function() {
+  makeSalt: function() {                       //randomize salt rounds
     return Math.round((new Date().valueOf() * Math.random())) + ''
   }
 }

@@ -38,13 +38,6 @@ const useStyles = makeStyles(theme => ({
     paddingTop: 8,
     paddingBottom: 8
   },
-  photoButton: {
-    height: 30,
-    marginBottom: 5
-  },
-  input: {
-    display: 'none',
-  },
   textField: {
     marginLeft: theme.spacing(3),
     marginRight: theme.spacing(3),
@@ -108,14 +101,17 @@ export default function NewPost (){
     long: ''
   })
 
-  //
+  //open confirm window
   const openConfirm = () => {
     setOpen(true)
   }
+
+  //close confirm window
   const closeConfirm = () => {
     setOpen(false)
   }
   
+  //submit post to api-post to create
   const clickPost = () => {
     const postData = {
       title: values.title || undefined,
@@ -147,6 +143,7 @@ export default function NewPost (){
   }
 
 
+  //use google maps places api to display establishments
   const {ref} = usePlacesWidget({
     apiKey: process.env.REACT_APP_GOOGLE_MAP_API,
     onPlaceSelected: (place)=> {
@@ -160,6 +157,7 @@ export default function NewPost (){
     }
   })
 
+  //handle change in input
   const handleChange = name => event => {
     if(name === 'location')
       setLocation({...location, address: event.target.value})

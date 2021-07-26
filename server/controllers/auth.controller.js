@@ -72,7 +72,7 @@ const login = async (req, res) => {
  */
 const logout = (req, res) => {
   res.clearCookie("t")
-  
+
   return res.status('200').json({
     message: "logged out"
   })
@@ -93,7 +93,7 @@ const requireLogin = expressJwt({
  * @param  {Object} req - profile : Musician who is requesting data
  *                        auth : Check whether user has credentials
  * @param  {Object} res - object to be populated with status if unauthorized
- * @param  {Object} next - call next function or route
+ * @param  {function} next - call next function or route
  */
 const hasAuthorization = (req, res, next) => {
   const authorized = req.profile && req.auth && req.profile._id == req.auth._id

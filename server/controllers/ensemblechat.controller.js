@@ -7,7 +7,6 @@ export default (server) => {
 
         //Join chatroom
         socket.on('join ensemble room', data => {
-            console.log('joined')
             socket.join(data.room)
         })
 

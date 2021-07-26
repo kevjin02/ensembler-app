@@ -11,6 +11,11 @@ import Postings from './posts/Postings'
 import Menu from './core/Menu'
 import Footer from './core/Footer'
 
+
+/**
+ * MainRouter (parent: App)
+ * @returns {Object} - Combines menu, page content based on route, and footer
+ */
 const MainRouter = () => {
     return (<div>
       <Menu/>
@@ -21,8 +26,8 @@ const MainRouter = () => {
         <Route path="/login" component={Login}/>
         <PrivateRoute path="/user/edit/:userId" component={EditProfile}/>
         <Route path="/user/:userId" component={Profile}/>
-        <PrivateRoute path="/create-post" component={NewPost}/>
-        <PrivateRoute path="/posts" component={Postings}/>
+        <Route path="/create-post" component={NewPost}/>
+        <Route path="/posts" component={Postings}/>
       </Switch>
       
       <Footer/>

@@ -13,6 +13,12 @@ import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 
 
+/**
+ * DeleteUser (parent: Profile)
+ * @param {Object} props -  userId : id of user to be deleted
+ * 
+ * @returns {Object} - Button and confirm window to delete own user
+ */
 export default function DeleteUser(props) {
 
   const [open, setOpen] = useState(false)
@@ -20,11 +26,13 @@ export default function DeleteUser(props) {
 
   const jwt = auth.isAuthenticated()
 
+  
+  //open confirm window
   const clickButton = () => {
     setOpen(true)
   }
 
-
+  //call api-post remove function to delete account
   const deleteAccount = () => { 
     remove({
       userId: props.userId
@@ -39,11 +47,13 @@ export default function DeleteUser(props) {
   }
 
 
+  //close confirm window
   const handleRequestClose = () => {
     setOpen(false)
   }
 
 
+  //redirect to homepage
   if (redirect) {
     return <Redirect to='/'/>
   }

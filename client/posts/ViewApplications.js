@@ -34,94 +34,107 @@ const useStyles = makeStyles(theme => ({
     }
   }))
 
+/**
+ * ViewApplications (parent: EnsemblePositions)
+ * @param {Object} props -  updateEnsemble : helper function to update ensemble when application approved
+ *                          id             : post id
+ *                          apps           : all applications
+ * 
+ * @returns {Object} - Application view where user can accept/reject applications
+ */
+export default function ViewApplications(props) {
+  const classes = useStyles()
 
-  export default function ViewApplications(props) {
-    const classes = useStyles()
-    const jwt = auth.isAuthenticated()
+  const jwt = auth.isAuthenticated()
 
-    const [appView, setAppView] = useState({
-        apps: props.apps,
-        viewApps: false,
-        error: ''
-    })
-
-
-    const viewApps = () => {
-        setAppView({...appView, open: true})
-    }
-
-
-    const handleClose = () => {
-      setAppView({...appView, open: false, error: ''})
-    }
+  const [appView, setAppView] = useState({
+      apps: props.apps,
+      viewApps: false,
+      error: ''
+  })
 
 
-    const approveApp = (index, musicianId) => {
-      approve({
-          postId: props.id,
-        }, {
-          t: jwt.token
-        },  {instrument: appView.apps[index].instrument, musicianId: musicianId}).then((data) => {
-          if (data.error) {
-            setAppView({...appView, error: data.error})
-          } else {
-            setAppView({...appView, apps: data.applications, error: ''})
-            props.updateEnsemble(data.ensemble)
-          }
-        })
-    }
-
-    const declineApp = (index) => {
-      decline({
-          postId: props.id,
-        }, {
-          t: jwt.token
-        },  {appId: appView.apps[index]._id}).then((data) => {
-          if (data.error) {
-            setAppView({...appView, error: data.error})
-          } else {
-            setAppView({...appView, apps: data, error: ''})
-          }
-        })
-    }
+  //Open application view window
+  const viewApps = () => {
+      setAppView({...appView, open: true})
+  }
 
 
-    return (
-      <div className={classes.root}>
+  //close application view window
+  const handleClose = () => {
+    setAppView({...appView, open: false, error: ''})
+  }
 
-        <Button className={classes.appButton} onClick={viewApps} variant="contained" color="primary">
-            View Applications ({appView.apps.length})
-        </Button>
 
-        <Dialog fullWidth={true} className={classes.appReview} open={appView.open} onClose={handleClose} aria-labelledby="form-dialog-title">
-            
-          <DialogTitle id='form-dialog-title' >Approve applications
+  //call approve method from api-post when application is approved
+  const approveApp = (index, musicianId) => {
+    approve({
+        postId: props.id,
+      }, {
+        t: jwt.token
+      },  {instrument: appView.apps[index].instrument, musicianId: musicianId}).then((data) => {
+        if (data.error) {
+          setAppView({...appView, error: data.error})
+        } else {
+          setAppView({...appView, apps: data.applications, error: ''})
+          props.updateEnsemble(data.ensemble)
+        }
+      })
+  }
 
-            <Button className={classes.closeButton} onClick={handleClose} color="primary">
-              Close
-            </Button>
 
-          </DialogTitle>
+  //call decline method from api-post when application is declined
+  const declineApp = (index) => {
+    decline({
+        postId: props.id,
+      }, {
+        t: jwt.token
+      },  {appId: appView.apps[index]._id}).then((data) => {
+        if (data.error) {
+          setAppView({...appView, error: data.error})
+        } else {
+          setAppView({...appView, apps: data, error: ''})
+        }
+      })
+  }
+
+
+  return (
+    <div className={classes.root}>
+
+      <Button className={classes.appButton} onClick={viewApps} variant="contained" color="primary">
+          View Applications ({appView.apps.length})
+      </Button>
+
+      <Dialog fullWidth={true} className={classes.appReview} open={appView.open} onClose={handleClose} aria-labelledby="form-dialog-title">
           
-          <DialogContent>
+        <DialogTitle id='form-dialog-title' >Approve applications
+
+          <Button className={classes.closeButton} onClick={handleClose} color="primary">
+            Close
+          </Button>
+
+        </DialogTitle>
+        
+        <DialogContent>
+
+          
+
+          <DialogContentText>
+          {appView.error && (<div className={classes.errorItem}><Typography className={classes.error} component="p" color="error">
+          <Icon color="error" className={classes.error}>error</Icon>
+          {appView.error}</Typography></div>
+          )}
+            {appView.apps.map((appItem, i) => {
+                return (<ApplicationItem decline={declineApp} approve={approveApp} key={i} index={i} app={appItem}/>)
+            })}
 
             
-
-            <DialogContentText>
-            {appView.error && (<div className={classes.errorItem}><Typography className={classes.error} component="p" color="error">
-            <Icon color="error" className={classes.error}>error</Icon>
-            {appView.error}</Typography></div>
-            )}
-              {appView.apps.map((appItem, i) => {
-                  return (<ApplicationItem decline={declineApp} approve={approveApp} key={i} index={i} app={appItem}/>)
-              })}
-
-              
-            </DialogContentText>
-           
-          </DialogContent>
-        </Dialog>
-      </div>);
+          </DialogContentText>
+          
+        </DialogContent>
+      </Dialog>
+    </div>);
 }
 
   

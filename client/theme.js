@@ -1,6 +1,9 @@
 import { createTheme } from '@material-ui/core/styles'
 import { pink } from '@material-ui/core/colors'
 
+/**
+ * Create custom theme and colors
+ */
 const theme = createTheme({
     typography: {
       useNextVariants: true,

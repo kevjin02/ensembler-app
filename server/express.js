@@ -18,7 +18,7 @@ import { StaticRouter } from 'react-router-dom'
 
 import { ServerStyleSheets, ThemeProvider } from '@material-ui/styles'
 import theme from './../client/theme'
-//end
+
 
 //comment out before building for production
 import devBundle from './devBundle'
@@ -36,7 +36,7 @@ app.use(cookieParser())
 app.use(compress())
 // secure apps by setting various HTTP headers
 app.use(helmet())
-// enable CORS - Cross Origin Resource Sharing
+// enable CORS to enable API
 app.use(cors())
 
 app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')))
@@ -46,6 +46,7 @@ app.use('/', userRoutes)
 app.use('/', authRoutes)
 app.use('/', postRoutes)
 
+//Create structure with server-side rendering
 app.get('*', (req, res) => {
   const sheets = new ServerStyleSheets()
   const context = {}
@@ -74,7 +75,6 @@ app.use((err, req, res, next) => {
     res.status(401).json({"error" : err.name + ": " + err.message})
   }else if (err) {
     res.status(400).json({"error" : err.name + ": " + err.message})
-    console.log(err)
   }
 })
 

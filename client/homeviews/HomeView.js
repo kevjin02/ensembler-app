@@ -17,22 +17,6 @@ const useStyles = makeStyles(theme => ({
       padding:`${theme.spacing(3)}px ${theme.spacing(2.5)}px ${theme.spacing(2)}px`,
       color: '#111111'
     },
-    media: {
-      minHeight: 400
-    },
-    credit: {
-      padding: 10,
-      textAlign: 'right',
-      backgroundColor: '#ededed',
-     
-      borderBottom: '1px solid #d0d0d0',
-      '& a':{
-        color: '#3f4771'
-      } 
-    },
-    icon: {
-      marginRight: theme.spacing(2),
-    },
     heroContent: {
       backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
@@ -48,21 +32,6 @@ const useStyles = makeStyles(theme => ({
       paddingBottom: theme.spacing(8),
       textAlign: 'center',
       color: '#3f4771'
-    },
-    card: {
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-    },
-    cardMedia: {
-      paddingTop: '56.25%',
-    },
-    cardContent: {
-      flexGrow: 1,
-    },
-    footer: {
-      backgroundColor: theme.palette.background.paper,
-      padding: theme.spacing(6),
     },
     titleImage: {
       color: 'white'

@@ -57,11 +57,15 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.primary.main,
       },
   },
-  ytLink: {
-  }
 }}))
 
+
+/**
+ * Register (parent: MainRouter)
+ * @returns {Object} - Register page
+ */
 export default function Register() {
+
   let loc = useLocation();
   const classes = useStyles()
   
@@ -77,6 +81,7 @@ export default function Register() {
       instrument: '',
       ytlink: ''
   })
+
   const [location, setLocation] = useState({
     address: '',
     lat: '',
@@ -84,15 +89,17 @@ export default function Register() {
   })
  
 
+  //handle change to update input
   const handleChange = name => event => {
-
     if(name === 'location')
       setLocation({...location, address: event.target.value})
+
     else 
       setValues({ ...values, [name]: event.target.value })
   }
 
 
+  //submit user to api-user when registering
   const clickSubmit = () => {
     const user = {
       name: values.name || undefined,
@@ -115,11 +122,13 @@ export default function Register() {
   }
 
 
+  //change user type between user and musician
   const changeUser = (event, nextView) => {
     setValues({...values, musician: nextView === 'true'});
   }
 
 
+  //change location and calculate longitude/latitude
   const changeLoc = place => {
     let loc = place.geometry.location.toString()
       loc = loc.substring(1,loc.length - 1).split(', ')
@@ -127,6 +136,7 @@ export default function Register() {
   }
 
 
+  //Use places widget with default cities only
   const {ref} = usePlacesWidget({
     apiKey: process.env.REACT_APP_GOOGLE_MAP_API,
     onPlaceSelected: changeLoc,

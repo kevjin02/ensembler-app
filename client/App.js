@@ -5,6 +5,11 @@ import { ThemeProvider } from '@material-ui/styles'
 import theme from './theme'
 import { hot } from 'react-hot-loader'
 
+
+/**
+ * Creates structure for App Router and sets theme (parent: main)
+ * @returns {Object} - Router with theme
+ */
 const App = () => {
   React.useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side')

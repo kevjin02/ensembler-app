@@ -6,7 +6,7 @@ import errorHandler from '../helpers/dbErrorHandler'
  * @param  {Object} req - post : post that is being checked
  *                        auth : ensure user is signed in
  * @param  {Object} res - object to be populated with status and returned
- * @param  {Object} next - call next function or route
+ * @param  {function} next - call next function in route
  */
  const isPoster = (req, res, next) => {
   let isPoster = req.post && req.auth && req.post.postedBy._id == req.auth._id
@@ -20,29 +20,30 @@ import errorHandler from '../helpers/dbErrorHandler'
 
 
 /**
- * Helper function: Finds and arranges posts for a user (listUserFeed in api-post)
- * @param  {Object} req - profile : User who is requesting data
- * @param  {Object} res - object to be populated with status and a user's posts and returned
+ * Helper function: Checks if post exists and populates request with necessary info
+ * @param  {Object} req - post : post to be populated with post from database
+ * @param  {Object} res - object to be populated with status and returned
+ * @param  {function} next - call next function in route
+ * @param  {string} id - id of post
  */
-const listByUser = async (req, res) => {
+ const postByID = async (req, res, next, id) => {
   try{
 
-    //Find posts that client had posted
-    let posts = await Post.find({postedBy: req.profile._id})
-                          .populate('comments.postedBy', '_id name musician instrument')
-                          .populate('postedBy', '_id name')
-                          .populate('ensembleChat.postedBy', '_id name musician instrument')
-                          .populate('followers', '_id')
-                          .populate('applications.musician','_id name instrument')
-                          .populate('ensemble.musician','_id name instrument')
-                          .sort('-created')
-                          .exec()
+    //Find post given ID
+    let post = await Post.findById(id).populate('postedBy', '_id name').exec()
 
-    res.json(posts)
+    //Handle bad id
+    if (!post)
+      return res.status('400').json({
+        error: "Post not found"
+      })
+
+    req.post = post
+    next()
 
   }catch(err){
     return res.status('400').json({
-      error: errorHandler.getErrorMessage(err)
+      error: "Could not retrieve use post"
     })
   }
 }
@@ -78,39 +79,38 @@ const create = async (req, res) => {
   }
 }
 
- 
+
 /**
- * Checks if post exists and populates request with necessary info
- * @param  {Object} req - post : post to be populated with post from database
- * @param  {Object} res - object to be populated with status and returned
- * @param  {Object} next - call next function or route
- * @param  {Object} id - id of post
+ * Finds and arranges posts for a user (listUserFeed in api-post)
+ * @param  {Object} req - profile : User who is requesting data
+ * @param  {Object} res - object to be populated with status and a user's posts and returned
  */
-const postByID = async (req, res, next, id) => {
+ const listByUser = async (req, res) => {
   try{
 
-    //Find post given ID
-    let post = await Post.findById(id).populate('postedBy', '_id name').exec()
+    //Find posts that client had posted
+    let posts = await Post.find({postedBy: req.profile._id})
+                          .populate('comments.postedBy', '_id name musician instrument')
+                          .populate('postedBy', '_id name')
+                          .populate('ensembleChat.postedBy', '_id name musician instrument')
+                          .populate('followers', '_id')
+                          .populate('applications.musician','_id name instrument')
+                          .populate('ensemble.musician','_id name instrument')
+                          .sort('-created')
+                          .exec()
 
-    //Handle bad id
-    if (!post)
-      return res.status('400').json({
-        error: "Post not found"
-      })
-
-    req.post = post
-    next()
+    res.json(posts)
 
   }catch(err){
     return res.status('400').json({
-      error: "Could not retrieve use post"
+      error: errorHandler.getErrorMessage(err)
     })
   }
 }
 
 
 /**
- * Finds and arranges posts a musician is following (listUserFeed in api-post)
+ * Finds and arranges posts a musician is following (listMusicianFeed in api-post)
  * @param  {Object} req - profile : Musician who is requesting data
  * @param  {Object} res - object to be populated with status and a user's posts and returned
  */
@@ -548,24 +548,22 @@ const loadChat = async(req, res) => {
   }
 }
   
-
   
-  export default {
-    listByUser,
-    listByMusicianArea,
-    listMusicianFeed,
-    create,
-    postByID,
-    remove,
-    comment,
-    uncomment,
-    follow,
-    unfollow,
-    isPoster,
-    apply,
-    approve,
-    decline,
-    removeMusician,
-    loadChat
-  }
-  
+export default {
+  listByUser,
+  listByMusicianArea,
+  listMusicianFeed,
+  create,
+  postByID,
+  remove,
+  comment,
+  uncomment,
+  follow,
+  unfollow,
+  isPoster,
+  apply,
+  approve,
+  decline,
+  removeMusician,
+  loadChat
+}
