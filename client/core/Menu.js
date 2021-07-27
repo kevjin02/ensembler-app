@@ -8,6 +8,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import Avatar from '@material-ui/core/Avatar'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +23,11 @@ const useStyles = makeStyles((theme) => ({
   },
   customizeToolbar: {
     minHeight: 100
-  }
+  },
+  smallAvatar: {
+    width: 25,
+    height: 25
+  },
 }));
 
 
@@ -93,7 +98,7 @@ const Menu = withRouter(function ({history}) {
               )}
 
               <Link to={"/user/" + auth.isAuthenticated().user._id}>
-                <Button className={classes.menu} style={isActive(history, "/user/" + auth.isAuthenticated().user._id)}><AccountCircle/></Button>
+                <Button className={classes.menu} style={isActive(history, "/user/" + auth.isAuthenticated().user._id)}><Avatar className={classes.smallAvatar} src={'/api/users/photo/'+auth.isAuthenticated().user._id}/></Button>
                 
               </Link>{}
 

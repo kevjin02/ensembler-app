@@ -18,6 +18,7 @@ const io = require('socket.io-client')
 const socket = io() 
 
 const useStyles = makeStyles(theme => ({
+  
     closeButton: {
         float: 'right'
     },
@@ -31,7 +32,7 @@ const useStyles = makeStyles(theme => ({
         position: 'absolute',
         left: '0',
         bottom: '0',
-        width: '100%',
+        width: '94%',
         backgroundColor: '#F8F8F8',
         borderTop: 'solid gray',
         borderWidth: '1px',
@@ -41,10 +42,9 @@ const useStyles = makeStyles(theme => ({
         height: 25
       },
       messageField: {
-        width: '96%'
+        width: '100%'
       },
       messageText: {
-        // backgroundColor: 'white',
         padding: theme.spacing(1),
         margin: `2px ${theme.spacing(2)}px 2px 2px`
       },
@@ -186,7 +186,6 @@ export default function EnsembleChat(props) {
 
   return (
       <span>
-      
         <DialogTitle id='form-dialog-title' >Ensemble Chat<Button className={classes.closeButton} onClick={props.handleClose} color="primary">
                   Close
               </Button>

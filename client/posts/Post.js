@@ -65,7 +65,8 @@ const useStyles = makeStyles(theme => ({
   },
   dialogPaper : {
     minHeight: '80vh',
-    maxHeight: '80vh'
+    maxHeight: '80vh',
+    minWidth: '500px'
 },
 }))
 
