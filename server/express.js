@@ -20,14 +20,12 @@ import { ServerStyleSheets, ThemeProvider } from '@material-ui/styles'
 import theme from './../client/theme'
 
 
-//comment out before building for production
-import devBundle from './devBundle'
+// import devBundle from './devBundle'
 
 const CURRENT_WORKING_DIR = process.cwd()
 const app = express()
 
-//comment out before building for production
-devBundle.compile(app)
+// devBundle.compile(app)
 
 // parse body params and attache them to req.body
 app.use(bodyParser.json())
@@ -39,12 +37,17 @@ app.use(helmet())
 // enable CORS to enable API
 app.use(cors())
 
+
 app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')))
+
+
 
 // mount routes
 app.use('/', userRoutes)
 app.use('/', authRoutes)
 app.use('/', postRoutes)
+
+
 
 //Create structure with server-side rendering
 app.get('*', (req, res) => {
@@ -55,18 +58,26 @@ app.get('*', (req, res) => {
           <StaticRouter location={req.url} context={context}>
             <ThemeProvider theme={theme}>
               <MainRouter />
+              
             </ThemeProvider>
+            
           </StaticRouter>
         )
     )
     if (context.url) {
       return res.redirect(303, context.url)
     }
+    // res.setHeader('content-type', 'application/javascript')
     const css = sheets.toString()
     res.status(200).send(Template({
       markup: markup,
       css: css
     }))
+})
+
+app.get('/dist/bundle.js', (req, res) => {
+  console.log(req)
+  res.header("Content-type", "text/html")
 })
 
 // Catch unauthorised errors

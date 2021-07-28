@@ -1,7 +1,7 @@
 {
   "name": "ensembler",
   "version": "1.0.0",
-  "description": "A MERN stack skeleton web application",
+  "description": "A job-searching app for musicians",
   "license": "MIT",
   "main": "./dist/server.generated.js",
   "scripts": {
