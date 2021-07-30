@@ -1,6 +1,6 @@
 # Ensembler
 
-### View live demo [here](ec2-3-138-201-237.us-east-2.compute.amazonaws.com).
+### View live demo [here](http://ec2-3-138-201-237.us-east-2.compute.amazonaws.com).
 
 ![Ensembler Homepage](images/HomepageView.png)
 
