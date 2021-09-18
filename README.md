@@ -27,9 +27,6 @@ API access is secured using Express-JWT, with many paths being limited to users 
 
 Front-end components were built with Material-UI and React.JS, while the back-end was made using Express.JS and Node.JS. Data is stored in a MongoDB database. Deployed with AWS EC2.
 
-## Reflection
-Overall, this was a great project to create from beginning to end, and took around a month. There were various times in which I had to reconstruct connections between the front and back end to pass around as few IDs as possible, and files were restructured frequently to make them easier to understand. It was cool to see the amount of progress made as compared to the [toQueue app](https://github.com/kevjin02/to-queue-app) that was completed only a few weeks before I started working on Ensembler, and it was gratifying to see a simple idea come into fruition after much hard work, whether it be sifting through countless tutorials on Youtube or contemplating new ideas to implement on the 20 minute car rides to and from the gym. I will definitely be looking to create more large MERN-stack applications from the bottom up in the future to further my full-stack knowledge and development skills.
-
 ## Upcoming features could include:
 * OAuth with Facebook
 * Actual paywall or holding deposit (to ensure that clients are serious about their event before posting)
